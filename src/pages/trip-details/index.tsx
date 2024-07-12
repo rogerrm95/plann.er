@@ -51,9 +51,7 @@ export function TripDetailsPage() {
 
       {/* MODAL - CADASTRAR ATIVIDADE */}
       {isCreateActivityModalOpen && (
-        <CreateActivityModal
-          closeCreateActivityModal={handleCloseCreateActivityModal}
-        />
+        <CreateActivityModal onCloseModal={handleCloseCreateActivityModal} />
       )}
     </div>
   )

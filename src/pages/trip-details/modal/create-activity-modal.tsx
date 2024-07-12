@@ -4,15 +4,15 @@ import { Modal } from '../../../components/modal'
 import { Input } from '../../../components/input'
 
 interface CreateActivityModalProps {
-  closeCreateActivityModal: () => void
+  onCloseModal: () => void
 }
 
 export function CreateActivityModal({
-  closeCreateActivityModal,
+  onCloseModal,
 }: CreateActivityModalProps) {
   return (
     <Modal
-      onCloseModal={closeCreateActivityModal}
+      onCloseModal={onCloseModal}
       title="Cadastrar atividade"
       description="Todos convidados podem visualizar as atividades."
     >
