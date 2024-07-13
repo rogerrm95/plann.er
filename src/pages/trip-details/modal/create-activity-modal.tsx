@@ -1,5 +1,6 @@
 import { FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
+import { subHours } from 'date-fns'
 import { api } from '../../../lib/axios'
 import { Calendar, Tag } from 'lucide-react'
 
@@ -51,6 +52,7 @@ export function CreateActivityModal({
           type="datetime-local"
           name="occurs_at"
           className="bg-transparent placeholder-zinc-400 outline-none flex-1"
+          min={subHours(new Date(), 3).toISOString().slice(0, -8)}
         />
 
         <Button size="full" type="submit">

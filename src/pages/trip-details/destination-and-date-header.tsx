@@ -43,7 +43,6 @@ export function DestinationAndDateHeader() {
     ) {
       const newTrip = {
         ...trip,
-        destination: destination || trip?.destination,
         starts_at: eventStartAndEndDates.from.toString(),
         ends_at: eventStartAndEndDates.to.toString(),
       } as Trip
@@ -65,16 +64,12 @@ export function DestinationAndDateHeader() {
   }
 
   async function updateTrip() {
-    if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to) {
-      return
-    }
-
     if (trip === undefined || !trip.destination) {
       return
     }
 
     await api.put(`/trips/${tripId}`, {
-      destination: trip.destination,
+      destination,
       starts_at: trip.starts_at,
       ends_at: trip.ends_at,
     })
@@ -138,6 +133,8 @@ export function DestinationAndDateHeader() {
             mode="range"
             selected={eventStartAndEndDates}
             onSelect={setEventStartAndEndDates}
+            showOutsideDays
+            disabled={{ before: new Date() }}
             modifiersStyles={{
               range_start: {
                 backgroundColor: '#BEF264',

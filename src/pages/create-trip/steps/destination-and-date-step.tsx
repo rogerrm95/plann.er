@@ -96,6 +96,7 @@ export function DestinationAndDateStep({
             mode="range"
             selected={eventStartAndEndDates}
             onSelect={setEventStartAndEndDates}
+            disabled={{ before: new Date() }}
             modifiersStyles={{
               range_start: {
                 backgroundColor: '#BEF264',
