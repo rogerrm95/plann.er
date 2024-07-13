@@ -1,8 +1,11 @@
-import { CheckCircle2, CircleDashed, UserCogIcon } from 'lucide-react'
-import { Button } from '../../components/button'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../../lib/axios'
+
+import { CheckCircle2, CircleDashed, UserCogIcon } from 'lucide-react'
+
+import { InviteGuestModal } from './modal/invite-guest-modal'
+import { Button } from '../../components/button'
 
 interface Participants {
   id: string
@@ -15,12 +18,21 @@ export function Guests() {
   const { tripId } = useParams()
 
   const [participants, setParticipants] = useState<Participants[]>([])
+  const [isInviteGuestModalOpen, setIsInviteGuestModalOpen] = useState(false)
 
   useEffect(() => {
     api
       .get(`/trips/${tripId}/participants`)
       .then((response) => setParticipants(response.data.participants))
   }, [tripId])
+
+  function handleOpenInviteGuestModal() {
+    setIsInviteGuestModalOpen(true)
+  }
+
+  function handleCloseInviteGuestModal() {
+    setIsInviteGuestModalOpen(false)
+  }
 
   return (
     <section className="space-y-6">
@@ -47,10 +59,19 @@ export function Guests() {
         </div>
       ))}
 
-      <Button variant="secondary" size="full">
+      <Button
+        variant="secondary"
+        size="full"
+        onClick={handleOpenInviteGuestModal}
+      >
         <UserCogIcon className="size-5 " />
         Gerenciar convidados
       </Button>
+
+      {/* MODAL - CONVIDAR PARTICIPANTE */}
+      {isInviteGuestModalOpen && (
+        <InviteGuestModal onCloseModal={handleCloseInviteGuestModal} />
+      )}
     </section>
   )
 }
