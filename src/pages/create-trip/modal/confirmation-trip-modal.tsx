@@ -7,18 +7,22 @@ import { Input } from '../../../components/input'
 interface ConfirmationTripModalProps {
   closeConfirmationTripModal: () => void
   createTrip: (event: FormEvent<HTMLFormElement>) => void
+  setOwnerName: (name: string) => void
+  setOwnerEmail: (email: string) => void
 }
 
 export function ConfirmationTripModal({
   closeConfirmationTripModal,
   createTrip,
+  setOwnerName,
+  setOwnerEmail,
 }: ConfirmationTripModalProps) {
   return (
     <Modal
       onCloseModal={closeConfirmationTripModal}
       title="Confirmar criação da viagem"
       description={
-        <p>
+        <>
           Para concluir a criação da viagem para{' '}
           <b className="text-zinc-100 font-semibold">Florianópolis</b>, Brasil
           nas datas de{' '}
@@ -26,7 +30,7 @@ export function ConfirmationTripModal({
             16 a 27 de Agosto de 2024
           </b>{' '}
           preencha seus dados abaixo:
-        </p>
+        </>
       }
     >
       <form className="space-y-3" onSubmit={createTrip}>
@@ -35,6 +39,7 @@ export function ConfirmationTripModal({
           name="owner"
           placeholder="Seu nome completo"
           required
+          onChange={(event) => setOwnerName(event.target.value)}
         />
 
         <Input
@@ -43,6 +48,7 @@ export function ConfirmationTripModal({
           name="email"
           placeholder="Seu e-mail pessoal"
           required
+          onChange={(event) => setOwnerEmail(event.target.value)}
         />
 
         <Button type="submit" size="full">

@@ -1,18 +1,52 @@
+import { useState } from 'react'
+
 import { ArrowRight, Calendar, MapPin, Settings2 } from 'lucide-react'
+
+import { DateRange, DayPicker } from 'react-day-picker'
+import 'react-day-picker/dist/style.css'
+import { format } from 'date-fns'
+
+// COMPONENTES //
 import { Button } from '../../../components/button'
 import { Input } from '../../../components/input'
+import { Modal } from '../../../components/modal'
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
   closeGuestsInput: () => void
   openGuestsInput: () => void
+  setDestination: (destination: string) => void
+  setEventStartAndEndDates: (dates: DateRange | undefined) => void
+  eventStartAndEndDates: DateRange | undefined
 }
 
 export function DestinationAndDateStep({
   closeGuestsInput,
   isGuestsInputOpen,
   openGuestsInput,
+  setDestination,
+  eventStartAndEndDates,
+  setEventStartAndEndDates,
 }: DestinationAndDateStepProps) {
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+
+  function openDatePicker() {
+    return setIsDatePickerOpen(true)
+  }
+
+  function closeDatePicker() {
+    return setIsDatePickerOpen(false)
+  }
+
+  const displayedDate =
+    eventStartAndEndDates &&
+    eventStartAndEndDates.from &&
+    eventStartAndEndDates.to
+      ? format(eventStartAndEndDates.from, "dd' de 'LLL")
+          .concat(' até ')
+          .concat(format(eventStartAndEndDates.to, "dd' de 'LLL"))
+      : null
+
   return (
     <>
       {/* FORM - LOCALIDADE */}
@@ -23,15 +57,23 @@ export function DestinationAndDateStep({
           disabled={isGuestsInputOpen}
           background="transparent"
           textSize="large"
+          onChange={(event) => setDestination(event.target.value)}
         />
 
-        <Input
-          IconType={<Calendar className="size-5 text-zinc-400" />}
-          placeholder="Quando"
+        <button
+          className="flex items-center gap-2 focus:outline-lime-500 outline-none px-4 rounded-lg h-14 text-left w-[240px]"
           disabled={isGuestsInputOpen}
-          background="transparent"
-          textSize="large"
-        />
+          onClick={openDatePicker}
+        >
+          <Calendar className="size-5 text-zinc-400" />
+          {displayedDate ? (
+            <span className="text-zinc-400 flex-1 text-sm">
+              {displayedDate}
+            </span>
+          ) : (
+            <span className="text-zinc-400 flex-1 text-lg">Quando</span>
+          )}
+        </button>
 
         <div className="w-px h-6 bg-zinc-800" />
 
@@ -47,6 +89,30 @@ export function DestinationAndDateStep({
           </Button>
         )}
       </div>
+
+      {isDatePickerOpen && (
+        <Modal onCloseModal={closeDatePicker} title="Selecione a data">
+          <DayPicker
+            mode="range"
+            selected={eventStartAndEndDates}
+            onSelect={setEventStartAndEndDates}
+            modifiersStyles={{
+              range_start: {
+                backgroundColor: '#BEF264',
+                color: '#1A2E05',
+              },
+              range_end: {
+                backgroundColor: '#BEF264',
+                color: '#1A2E05',
+              },
+              range_middle: {
+                backgroundColor: '#BEF264',
+                color: '#1A2E05',
+              },
+            }}
+          />
+        </Modal>
+      )}
     </>
   )
 }

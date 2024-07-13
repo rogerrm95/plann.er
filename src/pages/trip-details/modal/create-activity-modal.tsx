@@ -1,4 +1,9 @@
+import { FormEvent } from 'react'
+import { useParams } from 'react-router-dom'
+import { api } from '../../../lib/axios'
 import { Calendar, Tag } from 'lucide-react'
+
+// COMPONENTES //
 import { Button } from '../../../components/button'
 import { Modal } from '../../../components/modal'
 import { Input } from '../../../components/input'
@@ -10,30 +15,47 @@ interface CreateActivityModalProps {
 export function CreateActivityModal({
   onCloseModal,
 }: CreateActivityModalProps) {
+  const { tripId } = useParams()
+
+  async function createActivity(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const data = new FormData(event.currentTarget)
+
+    const title = data.get('title')?.toString()
+    const occursAt = data.get('occurs_at')?.toString()
+
+    await api.post(`/trips/${tripId}/activities`, {
+      title,
+      occurs_at: occursAt,
+    })
+
+    window.document.location.reload()
+  }
+
   return (
     <Modal
       onCloseModal={onCloseModal}
       title="Cadastrar atividade"
       description="Todos convidados podem visualizar as atividades."
     >
-      <form className="space-y-3">
+      <form className="space-y-3" onSubmit={createActivity}>
         <Input
           IconType={<Tag className="size-5 text-zinc-400" />}
           name="title"
           placeholder="Qual a atividade?"
-          required
         />
 
         <Input
           IconType={<Calendar className="size-5 text-zinc-400" />}
           type="datetime-local"
           name="occurs_at"
-          placeholder="17 de Agosto"
           className="bg-transparent placeholder-zinc-400 outline-none flex-1"
-          required
         />
 
-        <Button size="full">Salvar atividade</Button>
+        <Button size="full" type="submit">
+          Salvar atividade
+        </Button>
       </form>
     </Modal>
   )
