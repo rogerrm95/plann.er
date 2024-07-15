@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { subHours } from 'date-fns'
 import { api } from '../../../lib/axios'
@@ -8,6 +8,7 @@ import { Calendar, Tag } from 'lucide-react'
 import { Button } from '../../../components/button'
 import { Modal } from '../../../components/modal'
 import { Input } from '../../../components/input'
+import { DateRange } from 'react-day-picker'
 
 interface CreateActivityModalProps {
   onCloseModal: () => void
@@ -17,6 +18,21 @@ export function CreateActivityModal({
   onCloseModal,
 }: CreateActivityModalProps) {
   const { tripId } = useParams()
+
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >()
+
+  useEffect(() => {
+    api.get(`/trips/${tripId}`).then((response) => {
+      console.log(response.data)
+
+      setEventStartAndEndDates({
+        from: response.data.starts_a,
+        to: response.data.ends_at,
+      })
+    })
+  }, [tripId])
 
   async function createActivity(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -53,6 +69,13 @@ export function CreateActivityModal({
           name="occurs_at"
           className="bg-transparent placeholder-zinc-400 outline-none flex-1"
           min={subHours(new Date(), 3).toISOString().slice(0, -8)}
+          max={
+            eventStartAndEndDates?.to
+              ? subHours(eventStartAndEndDates?.to, 3)
+                  .toISOString()
+                  .slice(0, -8)
+              : undefined
+          }
         />
 
         <Button size="full" type="submit">
