@@ -25,7 +25,7 @@ export function InviteGuestsStep({
               {emailsToInvite.length} pessoa(s) convidada(s)
             </span>
           ) : (
-            <span>Para onde você vai ?</span>
+            <span>Quem estará na viagem?</span>
           )}
         </button>
       </div>

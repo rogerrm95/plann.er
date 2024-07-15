@@ -19,11 +19,7 @@ export function CreateTripPage() {
   const [isConfirmationTripModalOpen, setIsConfirmationTripModalOpen] =
     useState(false)
 
-  const [emailsToInvite, setEmailsToInvite] = useState([
-    'roger@test.com.br',
-    'johndoe@test.com',
-    'John_testing@test.com',
-  ])
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
 
   const [destination, setDestination] = useState('')
   const [ownerName, setOwnerName] = useState('')
@@ -176,6 +172,8 @@ export function CreateTripPage() {
           createTrip={createTrip}
           setOwnerName={setOwnerName}
           setOwnerEmail={setOwnerEmail}
+          destination={destination}
+          eventStartAndEndDates={eventStartAndEndDates}
         />
       )}
     </div>

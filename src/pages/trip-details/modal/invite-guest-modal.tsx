@@ -33,8 +33,8 @@ export function InviteGuestModal({ onCloseModal }: InviteGuestModalProps) {
   return (
     <Modal
       onCloseModal={onCloseModal}
-      title="Confirmar participação"
-      description="Preencha os dados abaixo para convidar uma pessoa a sua viagem:"
+      title="Convidar participante"
+      description="Preencha o campo de e-mail para convidar alguem a sua viagem :"
     >
       <form className="space-y-3" onSubmit={inviteGuestOnTrip}>
         <Input
