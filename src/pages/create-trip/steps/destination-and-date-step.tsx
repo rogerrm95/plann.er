@@ -5,6 +5,7 @@ import { ArrowRight, Calendar, MapPin, Settings2 } from 'lucide-react'
 import { DateRange, DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 // COMPONENTES //
 import { Button } from '../../../components/button'
@@ -42,9 +43,11 @@ export function DestinationAndDateStep({
     eventStartAndEndDates &&
     eventStartAndEndDates.from &&
     eventStartAndEndDates.to
-      ? format(eventStartAndEndDates.from, "dd' de 'LLL")
+      ? format(eventStartAndEndDates.from, "dd' de 'LLL", { locale: ptBR })
           .concat(' até ')
-          .concat(format(eventStartAndEndDates.to, "dd' de 'LLL"))
+          .concat(
+            format(eventStartAndEndDates.to, "dd' de 'LLL", { locale: ptBR }),
+          )
       : null
 
   return (
@@ -97,6 +100,7 @@ export function DestinationAndDateStep({
             selected={eventStartAndEndDates}
             onSelect={setEventStartAndEndDates}
             disabled={{ before: new Date() }}
+            locale={ptBR}
             modifiersStyles={{
               range_start: {
                 backgroundColor: '#BEF264',
@@ -111,6 +115,7 @@ export function DestinationAndDateStep({
                 color: '#1A2E05',
               },
             }}
+            style={{ textTransform: 'uppercase' }}
           />
         </Modal>
       )}

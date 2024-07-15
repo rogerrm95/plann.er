@@ -5,6 +5,8 @@ import { api } from '../../lib/axios'
 import { DateRange, DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
 import { MapPin, Calendar, Settings2, SaveAll } from 'lucide-react'
 
 import { Button } from '../../components/button'
@@ -78,9 +80,9 @@ export function DestinationAndDateHeader() {
   }
 
   const displayedDate = trip
-    ? format(trip.starts_at, "dd' de 'LLL")
+    ? format(trip.starts_at, "dd' de 'LLL", { locale: ptBR })
         .concat(' até ')
-        .concat(format(trip.ends_at, "dd' de 'LLL"))
+        .concat(format(trip.ends_at, "dd' de 'LLL", { locale: ptBR }))
     : null
 
   return (
@@ -135,6 +137,7 @@ export function DestinationAndDateHeader() {
             onSelect={setEventStartAndEndDates}
             showOutsideDays
             disabled={{ before: new Date() }}
+            locale={ptBR}
             modifiersStyles={{
               range_start: {
                 backgroundColor: '#BEF264',
@@ -149,6 +152,7 @@ export function DestinationAndDateHeader() {
                 color: '#1A2E05',
               },
             }}
+            style={{ textTransform: 'uppercase' }}
           />
         </Modal>
       )}
