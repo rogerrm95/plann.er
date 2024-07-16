@@ -53,24 +53,25 @@ export function DestinationAndDateStep({
   return (
     <>
       {/* FORM - LOCALIDADE */}
-      <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3">
+      <div className="py-3 px-4 bg-zinc-900 rounded-xl flex shadow-shape gap-3 flex-col md:flex-row md:items-center md:h-16 md:py-0">
         <Input
           IconType={<MapPin className="size-5 text-zinc-400" />}
           placeholder="Para onde você vai ?"
           disabled={isGuestsInputOpen}
           background="transparent"
           textSize="large"
+          paddingX="none"
           onChange={(event) => setDestination(event.target.value)}
         />
 
         <button
-          className="flex items-center gap-2 focus:outline-lime-500 outline-none px-4 rounded-lg h-14 text-left w-[240px]"
+          className="flex items-center gap-2 focus:outline-lime-500 outline-none px-0 md:px-4 rounded-lg h-14 text-left w-[240px]"
           disabled={isGuestsInputOpen}
           onClick={openDatePicker}
         >
           <Calendar className="size-5 text-zinc-400" />
           {displayedDate ? (
-            <span className="text-zinc-400 flex-1 text-sm">
+            <span className="text-zinc-400 flex-1 md:text-sm">
               {displayedDate}
             </span>
           ) : (
@@ -78,7 +79,7 @@ export function DestinationAndDateStep({
           )}
         </button>
 
-        <div className="w-px h-6 bg-zinc-800" />
+        <div className="w-px h-6 bg-zinc-800 md:block hidden" />
 
         {isGuestsInputOpen ? (
           <Button onClick={closeGuestsInput} variant="secondary">
@@ -94,7 +95,11 @@ export function DestinationAndDateStep({
       </div>
 
       {isDatePickerOpen && (
-        <Modal onCloseModal={closeDatePicker} title="Selecione a data">
+        <Modal
+          onCloseModal={closeDatePicker}
+          title="Selecione a data"
+          size="auto"
+        >
           <DayPicker
             mode="range"
             selected={eventStartAndEndDates}

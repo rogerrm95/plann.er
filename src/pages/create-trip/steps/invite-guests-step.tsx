@@ -13,8 +13,8 @@ export function InviteGuestsStep({
   openGuestsModal,
 }: InviteGuestsStepProps) {
   return (
-    <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3">
-      <div className="flex items-center gap-2 flex-1">
+    <div className="h-32 md:h-16 px-4 bg-zinc-900 rounded-xl flex flex-col md:flex-row md:items-center justify-center shadow-shape gap-3">
+      <div className="flex items-center gap-2 md:flex-1">
         <UserRoundPlus className="size-5 text-zinc-400" />
         <button
           className="bg-transparent text-lg text-zinc-400 outline-none flex-1 text-left"

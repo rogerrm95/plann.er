@@ -86,7 +86,10 @@ export function DestinationAndDateHeader() {
     : null
 
   return (
-    <header className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between gap-2">
+    <header
+      className={`px-4 h-24 py-3 rounded-xl bg-zinc-900 shadow-shape flex flex-col gap-2
+        md:items-center lg:flex-row lg:justify-between lg:h-16 lg:py-0`}
+    >
       {isUpdatingTrip ? (
         <Input
           IconType={<MapPin className="size-5 text-zinc-400" />}
@@ -94,35 +97,45 @@ export function DestinationAndDateHeader() {
           disabled={!isUpdatingTrip}
           background="transparent"
           textSize="large"
+          paddingX="none"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         />
       ) : (
-        <div className="flex items-center gap-2 px-4 h-14 text-lg flex-1">
+        <div className="flex items-center gap-2 md:px-4 h-14 text-lg flex-1">
           <MapPin className="size-5 text-zinc-400" />
-          <span>{trip?.destination}</span>
+          <span className="lg:hidden font-semibold">Destino:</span>
+          <span className="truncate">{trip?.destination}</span>
         </div>
       )}
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-5 px-0 md:px-4 ">
         <button
-          className="flex items-center gap-2 focus:outline-lime-500 outline-none"
+          className="flex items-center gap-2 focus:outline-lime-500 outline-none flex-1"
           disabled={!isUpdatingTrip}
           onClick={openDatePicker}
         >
           <Calendar className="size-5 text-zinc-400" />
-          <span className="text-zinc-100 flex-1 text-sm">{displayedDate}</span>
+          <span className="text-zinc-100 flex-1 text-sm text-left">
+            {displayedDate}
+          </span>
         </button>
 
         <div className="w-px h-6 bg-zinc-800" />
+
         {isUpdatingTrip ? (
-          <Button onClick={updateTrip}>
-            Salvar
+          <Button onClick={updateTrip} title="Salvar">
+            <span className="hidden text-sm sm:block sm:text-md">Salvar</span>
             <SaveAll className="size-5 text-lime-950" />
           </Button>
         ) : (
           <Button variant="secondary" onClick={handleUpdatingTripInput}>
-            Alterar local/data
+            <span
+              className="hidden text-sm sm:block sm:text-md"
+              title="Alterar data/local"
+            >
+              Alterar local/data
+            </span>
             <Settings2 className="size-5 text-zinc-200" />
           </Button>
         )}
@@ -130,7 +143,11 @@ export function DestinationAndDateHeader() {
 
       {/* MODAL - SELECIONAR DATAS */}
       {isDatePickerOpen && (
-        <Modal onCloseModal={closeDatePicker} title="Selecione a data">
+        <Modal
+          onCloseModal={closeDatePicker}
+          title="Selecione a data"
+          size="auto"
+        >
           <DayPicker
             mode="range"
             selected={eventStartAndEndDates}

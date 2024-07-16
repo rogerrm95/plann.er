@@ -21,26 +21,28 @@ export function TripDetailsPage() {
     setIsCreateActivityModalOpen(false)
   }
   return (
-    <div className="max-w-[1100px] mx-auto px-24 py-10 space-y-8">
+    <div className="max-w-[1100px] mx-auto px-12 lg:px-24 py-10 space-y-8">
       {/* CABEÇALHO */}
       <DestinationAndDateHeader />
 
-      <main className="flex gap-16 px-4">
+      <main className="flex flex-col lg:flex-row gap-8 lg:gap-16 px-4 ">
         {/* ATIVIDADES */}
-        <section className="flex-1 space-y-6">
-          <div className="flex justify-between items-center">
+        <section className="lg:flex-1 space-y-6">
+          <div className="flex flex-row items-center justify-between gap-3">
             <h2 className="font-semibold text-3xl">Atividades</h2>
             <Button onClick={handleOpenCreateActivityModal}>
-              <Plus className="size-5 text-lime-950" />
-              Cadastrar atividade
+              <Plus className="size-4 text-lime-950 md:size-5" />
+              <span className="hidden lg:block">Cadastrar atividade</span>
             </Button>
           </div>
 
           <Activities />
+
+          <div className="h-px w-full bg-zinc-800 md:hidden block" />
         </section>
 
         {/* DETALHES */}
-        <aside className="w-80 space-y-6">
+        <aside className="w-full lg:w-80 space-y-6">
           {/* LINKS IMPORTANTES */}
           <ImportantLinks />
 

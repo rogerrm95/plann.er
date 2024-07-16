@@ -46,7 +46,7 @@ export function InviteGuestsModal({
       <div className="h-px w-full bg-zinc-800" />
 
       <form
-        className="h-14 p-2.5 bg-zinc-950 rounded-xl flex items-center gap-3"
+        className="h-28 md:h-14 p-2.5 bg-zinc-950 rounded-xl flex flex-col md:flex-row items-center gap-3"
         onSubmit={addEmailGuestOnList}
       >
         <Input

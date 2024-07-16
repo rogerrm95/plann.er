@@ -57,7 +57,7 @@ export function ImportantLinks() {
                 </a>
               </div>
 
-              <Link2 className="text-zinc-400 size-5 shrink-0" />
+              <Link2 className="text-zinc-400 size-7 lg:size-5 shrink-0 hover:text-lime-500 transition-colors delay-75 cursor-pointer" />
             </div>
           </div>
         ))}

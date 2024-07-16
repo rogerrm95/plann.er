@@ -13,10 +13,24 @@ const inputVariants = tv({
       normal: 'text-md',
       large: 'text-lg',
     },
+    paddingX: {
+      none: 'px-0',
+      small: 'px-2',
+      base: 'px-4',
+      high: 'px-6',
+    },
+    paddingY: {
+      none: 'py-0',
+      small: 'py-2',
+      base: 'py-4',
+      high: 'py-6',
+    },
   },
   defaultVariants: {
     background: 'default',
     textSize: 'normal',
+    paddingX: 'base',
+    paddingY: 'none',
   },
 })
 
@@ -26,12 +40,21 @@ interface InputProps
   IconType?: JSX.Element
 }
 
-export function Input({ IconType, background, textSize, ...rest }: InputProps) {
+export function Input({
+  IconType,
+  background,
+  textSize,
+  paddingX,
+  paddingY,
+  ...rest
+}: InputProps) {
   return (
-    <div className={inputVariants({ background, textSize })}>
+    <div
+      className={inputVariants({ background, textSize, paddingY, paddingX })}
+    >
       {IconType}
       <input
-        className="bg-transparent placeholder-zinc-400 outline-none flex-1"
+        className="bg-transparent placeholder-zinc-400 outline-none flex-1 disabled:text-sm truncate"
         {...rest}
       />
     </div>

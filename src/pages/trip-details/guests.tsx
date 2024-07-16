@@ -42,7 +42,10 @@ export function Guests() {
         <div className="space-y-5" key={participant.id}>
           <div className="flex items-center justify-between gap-4">
             <div className="space-y-1.5">
-              <span className="block font-medium text-zinc-100">
+              <span
+                className="block font-medium text-zinc-100 truncate"
+                title={participant.name}
+              >
                 {participant.name ?? `Convidado ${index}`}
               </span>
               <span className="block text-zinc-400 text-sm truncate">
