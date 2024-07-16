@@ -37,6 +37,10 @@ export function ImportantLinks() {
     setIsNewLinkModalOpen(false)
   }
 
+  function copyLinkToClipboard(link: string) {
+    navigator.clipboard.writeText(link)
+  }
+
   return (
     <section className="space-y-6">
       <h2 className="font-semibold text-xl">Links importantes</h2>
@@ -57,7 +61,10 @@ export function ImportantLinks() {
                 </a>
               </div>
 
-              <Link2 className="text-zinc-400 size-7 lg:size-5 shrink-0 hover:text-lime-500 transition-colors delay-75 cursor-pointer" />
+              <Link2
+                className="text-zinc-400 size-7 lg:size-5 shrink-0 hover:text-lime-500 transition-colors delay-75 cursor-pointer"
+                onClick={() => copyLinkToClipboard(link.url)}
+              />
             </div>
           </div>
         ))}
