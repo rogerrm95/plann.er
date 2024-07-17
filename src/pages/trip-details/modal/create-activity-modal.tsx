@@ -1,14 +1,18 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { DateRange } from 'react-day-picker'
 import { subHours } from 'date-fns'
+
 import { api } from '../../../lib/axios'
+import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
+
 import { Calendar, Tag } from 'lucide-react'
 
 // COMPONENTES //
 import { Button } from '../../../components/button'
 import { Modal } from '../../../components/modal'
 import { Input } from '../../../components/input'
-import { DateRange } from 'react-day-picker'
 
 interface CreateActivityModalProps {
   onCloseModal: () => void
@@ -25,8 +29,6 @@ export function CreateActivityModal({
 
   useEffect(() => {
     api.get(`/trips/${tripId}`).then((response) => {
-      console.log(response.data)
-
       setEventStartAndEndDates({
         from: response.data.starts_a,
         to: response.data.ends_at,
@@ -37,17 +39,33 @@ export function CreateActivityModal({
   async function createActivity(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const data = new FormData(event.currentTarget)
+    try {
+      const data = new FormData(event.currentTarget)
 
-    const title = data.get('title')?.toString()
-    const occursAt = data.get('occurs_at')?.toString()
+      const title = data.get('title')?.toString()
+      const occursAt = data.get('occurs_at')?.toString()
 
-    await api.post(`/trips/${tripId}/activities`, {
-      title,
-      occurs_at: occursAt,
-    })
+      if (!title) {
+        return toast.warning('Aviso: Informar um título para atividade')
+      }
 
-    window.document.location.reload()
+      if (!occursAt) {
+        return toast.warning('Aviso: Informar a data e horário da atividade')
+      }
+
+      await api.post(`/trips/${tripId}/activities`, {
+        title,
+        occurs_at: occursAt,
+      })
+
+      toast.success('Atividade criada com sucesso!')
+
+      onCloseModal()
+    } catch (error) {
+      const errorHandler = error as AxiosError
+      const { message } = errorHandler.response?.data as AxiosError
+      toast.error(`Erro: ${message}`)
+    }
   }
 
   return (

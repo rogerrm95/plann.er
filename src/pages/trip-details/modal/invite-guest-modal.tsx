@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { FormEvent } from 'react'
 import { api } from '../../../lib/axios'
 
+import { toast } from 'react-toastify'
 import { Mail } from 'lucide-react'
 
 // COMPONENTES //
@@ -19,15 +20,23 @@ export function InviteGuestModal({ onCloseModal }: InviteGuestModalProps) {
   async function inviteGuestOnTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const data = new FormData(event.currentTarget)
+    try {
+      const data = new FormData(event.currentTarget)
 
-    const email = data.get('email')
+      const email = data.get('email')
 
-    console.log(email)
+      if (!email) {
+        return toast.warning('Aviso: informe um e-mail!')
+      }
 
-    await api.post(`/trips/${tripId}/invites`, { email })
+      await api.post(`/trips/${tripId}/invites`, { email }).then(() => {
+        toast.success('Convite enviado com sucesso!')
+      })
 
-    window.document.location.reload()
+      onCloseModal()
+    } catch (_) {
+      toast.error(`Erro: E-mail inválido`)
+    }
   }
 
   return (

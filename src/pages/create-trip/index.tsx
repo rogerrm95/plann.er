@@ -1,15 +1,15 @@
 import { FormEvent, useState } from 'react'
-
+import { DateRange } from 'react-day-picker'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+
+import { AxiosError } from 'axios'
+import { api } from '../../lib/axios'
 
 import { InviteGuestsModal } from './modal/invite-guests-modal'
 import { ConfirmationTripModal } from './modal/confirmation-trip-modal'
 import { DestinationAndDateStep } from './steps/destination-and-date-step'
 import { InviteGuestsStep } from './steps/invite-guests-step'
-
-import { DateRange } from 'react-day-picker'
-
-import { api } from '../../lib/axios'
 
 export function CreateTripPage() {
   const navigate = useNavigate()
@@ -82,30 +82,38 @@ export function CreateTripPage() {
   async function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to) {
-      return
+    try {
+      if (!destination) {
+        return toast.warning('Aviso: Informar o destino')
+      }
+
+      if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to) {
+        return toast.warning(
+          'Aviso: Informar as datas de início e fim da viagem',
+        )
+      }
+
+      if (!ownerEmail || !ownerName) {
+        return toast.warning('Aviso: Nome ou e-mail pessoal está ausente')
+      }
+
+      const response = await api.post('/trips', {
+        destination,
+        starts_at: eventStartAndEndDates.from,
+        ends_at: eventStartAndEndDates.to,
+        emails_to_invite: emailsToInvite,
+        owner_name: ownerName,
+        owner_email: ownerEmail,
+      })
+
+      const { tripId } = response.data
+
+      navigate(`/trips/${tripId}`)
+    } catch (error) {
+      const errorHandler = error as AxiosError
+      const { message } = errorHandler.response?.data as AxiosError
+      toast.error(`Erro: ${message}`)
     }
-
-    if (emailsToInvite.length === 0) {
-      return
-    }
-
-    if (!ownerEmail || !ownerName) {
-      return
-    }
-
-    const response = await api.post('/trips', {
-      destination,
-      starts_at: eventStartAndEndDates.from,
-      ends_at: eventStartAndEndDates.to,
-      emails_to_invite: emailsToInvite,
-      owner_name: ownerName,
-      owner_email: ownerEmail,
-    })
-
-    const { tripId } = response.data
-
-    navigate(`/trips/${tripId}`)
   }
 
   return (

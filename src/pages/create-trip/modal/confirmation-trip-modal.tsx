@@ -46,8 +46,9 @@ export function ConfirmationTripModal({
       description={
         <>
           Para concluir a criação da viagem para{' '}
-          <b className="text-zinc-100 font-semibold">{destination}</b>, nas
-          datas de <b className="text-zinc-100 font-semibold">{fullTripDate}</b>{' '}
+          <b className="text-zinc-100 font-semibold">{destination || '-'}</b>,
+          nas datas de{' '}
+          <b className="text-zinc-100 font-semibold">{fullTripDate || '-'}</b>{' '}
           preencha seus dados abaixo:
         </>
       }
@@ -57,7 +58,6 @@ export function ConfirmationTripModal({
           IconType={<User className="size-5 text-zinc-400" />}
           name="owner"
           placeholder="Seu nome completo"
-          required
           onChange={(event) => setOwnerName(event.target.value)}
         />
 
@@ -66,7 +66,6 @@ export function ConfirmationTripModal({
           type="email"
           name="email"
           placeholder="Seu e-mail pessoal"
-          required
           onChange={(event) => setOwnerEmail(event.target.value)}
         />
 

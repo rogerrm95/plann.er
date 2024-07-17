@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../../lib/axios'
-
+import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
 import { DateRange, DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { format } from 'date-fns'
@@ -66,17 +67,23 @@ export function DestinationAndDateHeader() {
   }
 
   async function updateTrip() {
-    if (trip === undefined || !trip.destination) {
-      return
+    try {
+      if (trip === undefined || !trip.destination) {
+        return toast.warning('Aviso: Destino ou as datas estão incompletas!')
+      }
+
+      await api.put(`/trips/${tripId}`, {
+        destination,
+        starts_at: trip.starts_at,
+        ends_at: trip.ends_at,
+      })
+
+      window.document.location.reload()
+    } catch (error) {
+      const errorHandler = error as AxiosError
+      const { message } = errorHandler.response?.data as AxiosError
+      toast.error(`Erro: ${message}`)
     }
-
-    await api.put(`/trips/${tripId}`, {
-      destination,
-      starts_at: trip.starts_at,
-      ends_at: trip.ends_at,
-    })
-
-    window.document.location.reload()
   }
 
   const displayedDate = trip

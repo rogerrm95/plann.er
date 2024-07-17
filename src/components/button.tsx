@@ -3,7 +3,7 @@ import { ComponentProps, ReactNode } from 'react'
 import { tv, VariantProps } from 'tailwind-variants'
 
 const buttonVariants = tv({
-  base: 'flex items-center justify-center gap-2 rounded-lg px-5 py-2 font-medium transition-colors delay-100',
+  base: 'flex items-center justify-center gap-2 rounded-lg px-5 py-2 font-medium transition-colors delay-100 cursor-pointer',
   variants: {
     variant: {
       primary: 'bg-lime-300 text-lime-950 hover:bg-lime-400',

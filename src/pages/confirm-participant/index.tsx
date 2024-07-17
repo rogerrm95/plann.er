@@ -1,6 +1,8 @@
 import { FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
+import { AxiosError } from 'axios'
 import { api } from '../../lib/axios'
+import { toast } from 'react-toastify'
 
 import { User } from 'lucide-react'
 import { Input } from '../../components/input'
@@ -12,15 +14,25 @@ export function ConfirmParticipant() {
   async function confirmParticipantOnTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const data = new FormData(event.currentTarget)
+    try {
+      const data = new FormData(event.currentTarget)
 
-    const name = data.get('name')
+      const name = data.get('name')
 
-    await api.patch(`participants/${participantId}/confirm`, {
-      name,
-    })
+      if (!name) {
+        return toast.warning('Aviso: Informar seu nome completo')
+      }
 
-    window.document.location.replace('/')
+      await api.patch(`participants/${participantId}/confirm`, {
+        name,
+      })
+
+      window.document.location.replace('/')
+    } catch (error) {
+      const errorHandler = error as AxiosError
+      const { message } = errorHandler.response?.data as AxiosError
+      toast.error(`Erro: ${message}`)
+    }
   }
   return (
     <div className="h-screen flex justify-center items-center bg-pattern bg-no-repeat bg-center">

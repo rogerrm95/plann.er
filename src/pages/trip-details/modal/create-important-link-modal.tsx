@@ -1,12 +1,13 @@
 import { FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { Link2, Tag } from 'lucide-react'
+import { api } from '../../../lib/axios'
 
 // COMPONENTES //
 import { Input } from '../../../components/input'
 import { Modal } from '../../../components/modal'
 import { Button } from '../../../components/button'
-import { api } from '../../../lib/axios'
 
 interface CreateImportantLinkModalProps {
   onCloseModal: () => void
@@ -20,17 +21,25 @@ export function CreateImportantLinkModal({
   async function addNewLinkOnTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const data = new FormData(event.currentTarget)
+    try {
+      const data = new FormData(event.currentTarget)
 
-    const title = data.get('title')
-    const url = data.get('url')
+      const title = data.get('title')
+      const url = data.get('url')
 
-    await api.post(`/trips/${tripId}/links`, {
-      title,
-      url,
-    })
+      await api
+        .post(`/trips/${tripId}/links`, {
+          title,
+          url,
+        })
+        .then(() => {
+          toast.success('Link criado com sucesso!')
+        })
 
-    window.document.location.reload()
+      onCloseModal()
+    } catch (_) {
+      toast.error(`Erro: URL inválida`)
+    }
   }
 
   return (
@@ -44,14 +53,12 @@ export function CreateImportantLinkModal({
           IconType={<Tag className="size-5 text-zinc-400" />}
           name="title"
           placeholder="Título do link"
-          required
         />
 
         <Input
           IconType={<Link2 className="size-5 text-zinc-400" />}
           name="url"
           placeholder="URL"
-          required
         />
 
         <Button size="full">Salvar link</Button>
